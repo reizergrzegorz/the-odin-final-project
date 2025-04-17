@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_17_095639) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_17_123441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_17_095639) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "follow_requests", force: :cascade do |t|
+    t.bigint "requester_id", null: false
+    t.bigint "receiver_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["receiver_id"], name: "index_follow_requests_on_receiver_id"
+    t.index ["requester_id"], name: "index_follow_requests_on_requester_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -94,6 +104,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_17_095639) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "follow_requests", "users", column: "receiver_id"
+  add_foreign_key "follow_requests", "users", column: "requester_id"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"
