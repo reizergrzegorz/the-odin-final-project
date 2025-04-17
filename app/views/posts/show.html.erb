@@ -1,4 +1,4 @@
-<h2>Author: <%= @post.user.email %></h2>
+<h2>Author: <%= link_to @post.user.profile.username, profile_path(@post.user.profile) %></h2>
 <p><%= @post.content %></p>
 
 <hr>
@@ -16,7 +16,7 @@
   <ul>
     <% @post.comments.each do |comment| %>
       <li>
-        <strong><%= comment.user.email || comment.user.email %>:</strong>
+        <strong><%= link_to comment.user.profile.username, profile_path(comment.user.profile) %>:</strong>
         <%= comment.body %>
       </li>
     <% end %>
