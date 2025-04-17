@@ -2,6 +2,13 @@
 <p><%= @post.content %></p>
 
 <hr>
+<p><strong>Liczba lajków:</strong> <%= @post.likes.count %></p>
+
+<% if @post.likes.exists?(user: current_user) %>
+  <%= button_to "❤️ Unlike", post_like_path(@post), method: :delete %>
+<% else %>
+  <%= button_to "🤍 Like", post_like_path(@post), method: :post %>
+<% end %>
 
 <h3>Comments:</h3>
 
