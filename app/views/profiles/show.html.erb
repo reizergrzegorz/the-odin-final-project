@@ -1,2 +1,12 @@
-<h1>Profiles#show</h1>
-<p>Find me in app/views/profiles/show.html.erb</p>
+<h2><%= @profile.username %></h2>
+
+<% if @profile.avatar.attached? %>
+  <%= image_tag url_for(@profile.avatar), width: 150, height: 150 if @profile.avatar.attached? %>
+<% end %>
+
+<p><strong>Bio:</strong> <%= @profile.bio %></p>
+
+<% if current_user == @profile.user %>
+  <%= link_to "Edytuj profil", edit_profile_path(@profile) %>
+<% end %>
+
