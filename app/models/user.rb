@@ -9,7 +9,16 @@ class User < ApplicationRecord
   has_many :comments
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
-  
+  has_many :sent_follow_requests, class_name: "FollowRequest", foreign_key: :requester_id, dependent: :destroy
+  has_many :received_follow_requests, class_name: "FollowRequest", foreign_key: :receiver_id, dependent: :destroy
+
+  # Akceptowani obserwowani i obserwujący:
+  has_many :followings, -> { where(status: "accepted") }, class_name: "FollowRequest", foreign_key: :requester_id
+  has_many :followers,  -> { where(status: "accepted") }, class_name: "FollowRequest", foreign_key: :receiver_id
+
+  has_many :accepted_followers, through: :followers, source: :requester
+  has_many :accepted_followings, through: :followings, source: :receiver
+
   def create_profile
     Profile.create(user: self, username: self.email.split("@").first)
   end
