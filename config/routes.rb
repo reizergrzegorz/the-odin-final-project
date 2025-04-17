@@ -6,12 +6,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     get "users/sign_out" => "devise/sessions#destroy"
   end
-  authenticated :user do
-    root to: 'posts#index', as: :authenticated_root
-  end
-  unauthenticated do
-    root to: 'devise/sessions#new', as: :unauthenticated_root
-  end
-  resources :posts do
-    resources :comments
+  
+  resources :posts, only: [:index, :new, :create, :show] do
+    resources :comments, only: [:create]
+  end  
 end
