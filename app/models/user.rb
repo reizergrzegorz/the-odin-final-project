@@ -4,7 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_one :profile, dependent: :destroy
-  after_create :create_profile       
+  after_create :create_profile
+  after_create :send_welcome_email       
   has_many :posts
   has_many :comments
   has_many :likes, dependent: :destroy
@@ -18,7 +19,13 @@ class User < ApplicationRecord
 
   has_many :accepted_followers, through: :followers, source: :requester
   has_many :accepted_followings, through: :followings, source: :receiver
+  
+  private
 
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
+  end
+  
   def create_profile
     Profile.create(user: self, username: self.email.split("@").first)
   end
