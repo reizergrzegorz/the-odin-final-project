@@ -1,2 +1,23 @@
-<h1>Profiles#edit</h1>
-<p>Find me in app/views/profiles/edit.html.erb</p>
+<h2>Edit profile</h2>
+
+<%= form_with(model: @profile, local: true, html: { multipart: true }) do |f| %>
+  <div>
+    <%= f.label :username %><br>
+    <%= f.text_field :username %>
+  </div>
+
+  <div>
+    <%= f.label :bio %><br>
+    <%= f.text_area :bio %>
+  </div>
+
+  <div>
+    <%= f.label :avatar %><br>
+    <%= f.file_field :avatar %>
+  </div>
+
+  <div>
+    <%= f.submit "Save" %>
+  </div>
+<% end %>
+
