@@ -12,5 +12,6 @@ Rails.application.routes.draw do
   unauthenticated do
     root to: 'devise/sessions#new', as: :unauthenticated_root
   end
-  resources :posts
+  resources :posts do
+    resources :comments
 end
