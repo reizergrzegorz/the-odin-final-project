@@ -1,0 +1,6 @@
+<h1>Posts</h1>
+
+<% if user_signed_in? %>
+    
+    <p>Sign out <%= link_to "here", destroy_user_session_path, method: :delete %></p>
+<% end %>
