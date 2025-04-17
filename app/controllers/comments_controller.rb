@@ -9,8 +9,7 @@ class CommentsController < ApplicationController
       if @comment.save
         redirect_to post_path(@post), notice: "Comment added"
       else
-        redirect_to posts_path, alert: "Could not add comment"
-        render "posts/show", status: :unprocessable_entity
+        redirect_to post_path(@post), alert: "Could not add comment"
       end
     end
   
