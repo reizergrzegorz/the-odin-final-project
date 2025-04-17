@@ -10,7 +10,34 @@
   <%= link_to "Edit profile", edit_profile_path(@profile) %>
 <% end %>
 
-<h3>Posty użytkownika <%= @profile.username %>:</h3>
+<% if current_user != @profile.user %>
+  <% existing_request = current_user.sent_follow_requests.find_by(receiver: @profile.user) %>
+
+  <% if existing_request.nil? %>
+    <%= button_to "Follow", follow_requests_path(receiver_id: @profile.user.id), method: :post %>
+  <% elsif existing_request.status == "pending" %>
+    <p>Request sent</p>
+    <%= button_to "Cancel", follow_request_path(existing_request), method: :delete %>
+  <% elsif existing_request.status == "accepted" %>
+    <p>Already following</p>
+    <%= button_to "Cancel following", follow_request_path(existing_request), method: :delete %>
+  <% elsif existing_request.status == "rejected" %>
+    <p>Request denied</p>
+  <% end %>
+<% end %>
+
+<% if current_user == @profile.user %>
+  <h4>Following requests:</h4>
+  <% current_user.received_follow_requests.where(status: "pending").each do |req| %>
+    <p>
+      <%= link_to req.requester.profile.username, profile_path(req.requester.profile) %>
+      <%= button_to "Accept", follow_request_path(req, accept: true), method: :patch %>
+      <%= button_to "Reject", follow_request_path(req, reject: true), method: :patch %>
+    </p>
+  <% end %>
+<% end %>
+
+<h3>User posts <%= @profile.username %>:</h3>
 
 <% if @posts.any? %>
   <ul>
@@ -23,7 +50,7 @@
     <% end %>
   </ul>
 <% else %>
-  <p>Ten użytkownik nie dodał jeszcze żadnych postów.</p>
+  <p>This user doesn't create any posts</p>
 <% end %>
 
 <%= link_to "Main page", posts_path %>    
