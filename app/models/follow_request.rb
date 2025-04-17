@@ -6,5 +6,13 @@ class FollowRequest < ApplicationRecord
 
   validates :status, inclusion: { in: STATUSES }
   validates :requester_id, uniqueness: { scope: :receiver_id, message: "Already sent" }
+
+  validate :requester_cannot_follow_themselves
+
+  def requester_cannot_follow_themselves
+    if requester_id == receiver_id
+      errors.add(:receiver_id, "can't be the same as requester")
+    end
+  end
 end
 
