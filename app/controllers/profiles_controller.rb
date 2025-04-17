@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update]
 
   def show
+    @posts = @profile.user.posts.order(created_at: :desc)
   end
 
   def edit

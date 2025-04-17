@@ -9,4 +9,21 @@
 <% if current_user == @profile.user %>
   <%= link_to "Edit profile", edit_profile_path(@profile) %>
 <% end %>
+
+<h3>Posty użytkownika <%= @profile.username %>:</h3>
+
+<% if @posts.any? %>
+  <ul>
+    <% @posts.each do |post| %>
+      <li>
+        <p>Author: <%= link_to post.user.profile.username, profile_path(post.user.profile) %></p>
+        <p><%= truncate(post.content, length: 100) %></p>
+        <%= link_to "See more", post_path(post) %>        
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Ten użytkownik nie dodał jeszcze żadnych postów.</p>
+<% end %>
+
 <%= link_to "Main page", posts_path %>    
