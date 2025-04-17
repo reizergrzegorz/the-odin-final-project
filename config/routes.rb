@@ -15,5 +15,5 @@ Rails.application.routes.draw do
     resource :like, only: [:create, :destroy]
   end 
   resources :profiles, only: [:show, :edit, :update]
-
+  resources :follow_requests, only: [:create, :update, :destroy]
 end
