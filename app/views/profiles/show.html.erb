@@ -7,6 +7,6 @@
 <p><strong>Bio:</strong> <%= @profile.bio %></p>
 
 <% if current_user == @profile.user %>
-  <%= link_to "Edytuj profil", edit_profile_path(@profile) %>
+  <%= link_to "Edit profile", edit_profile_path(@profile) %>
 <% end %>
-
+<%= link_to "Main page", posts_path %>    
