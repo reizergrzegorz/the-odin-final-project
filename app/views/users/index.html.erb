@@ -11,7 +11,7 @@
     <% follow_request = current_user.sent_follow_requests.find_by(receiver: user) %>
 
     <% if follow_request.nil? %>
-      <%= button_to "Follow", follow_requests_path(receiver_id: user.id), method: :post %>
+      <%= button_to "Follow request", follow_requests_path(receiver_id: user.id), method: :post %>
     <% elsif follow_request.status == "pending" %>
       <span>– Pending</span>
       <%= button_to "Cancel", follow_request_path(follow_request), method: :delete %>
