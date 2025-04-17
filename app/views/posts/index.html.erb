@@ -7,7 +7,8 @@
 <% @posts.each do |post| %>
     <div>      
         <p>Author: <%= post.user.email %></p>
-        <p>Content: <%= post.content %></p>        
+        <p><%= truncate(post.content, length: 100) %></p>
+        <%= link_to "Zobacz więcej", post_path(post) %>        
     </div><br>
 <% end %>
 
