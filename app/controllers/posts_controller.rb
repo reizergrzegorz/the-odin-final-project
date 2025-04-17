@@ -1,8 +1,14 @@
 class PostsController < ApplicationController
     
     def index
-        #@posts = current_user.posts.all
-        @posts = Post.all
+        followed_ids = current_user.sent_follow_requests
+        .where(status: 'accepted')
+        .pluck(:receiver_id)
+      
+        visible_user_ids = followed_ids + [current_user.id]
+        Rails.logger.debug "✅ VISIBLE IDS: #{visible_user_ids}"
+      
+        @posts = Post.where(user_id: visible_user_ids).order(created_at: :desc)
     end
     
     def new 
