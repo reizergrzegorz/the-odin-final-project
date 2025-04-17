@@ -1,2 +1,28 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<h2>All users</h2>
+
+<% @users.each do |user| %>
+  <div style="margin-bottom: 10px;">
+    <% if user.profile %>
+      <%= link_to user.profile.username, profile_path(user.profile) %>
+    <% else %>
+      <%= user.email %>
+    <% end %>
+
+    <% follow_request = current_user.sent_follow_requests.find_by(receiver: user) %>
+
+    <% if follow_request.nil? %>
+      <%= button_to "Follow", follow_requests_path(receiver_id: user.id), method: :post %>
+    <% elsif follow_request.status == "pending" %>
+      <span>– Pending</span>
+      <%= button_to "Cancel", follow_request_path(follow_request), method: :delete %>
+    <% elsif follow_request.status == "accepted" %>
+      <span>– Already following</span>
+      <%= button_to "Cancel following", follow_request_path(follow_request), method: :delete %>
+    <% elsif follow_request.status == "rejected" %>
+      <span>– Denied</span>
+    <% end %>
+  </div>
+  
+<% end %>
+
+<%= link_to "Main page", posts_path %>
